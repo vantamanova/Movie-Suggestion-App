@@ -97,7 +97,7 @@ header nav a:hover {
 .hero {
     position: relative;
     height: 500px;
-    background-image: url('/images/hero.jpeg');
+    background-image: url('../images/hero.jpeg');
     background-size: cover;
     background-position: center;
     display: flex;
