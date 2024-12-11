@@ -1,3 +1,8 @@
+import { loadHeaderFooter } from "./utils.mjs";
+
+loadHeaderFooter();
+
+
 const options = {
     method: 'GET',
     headers: {
@@ -10,3 +15,5 @@ const options = {
     .then(res => res.json())
     .then(res => console.log(res))
     .catch(err => console.error(err));
+
+

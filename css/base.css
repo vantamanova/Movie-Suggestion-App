@@ -161,7 +161,7 @@ button.outline:hover {
 
 
 /* Footer */
-.footer {
+#footer {
     background-color: #FFFFFF;
     text-align: center;
     padding: 20px;
@@ -170,13 +170,13 @@ button.outline:hover {
     bottom: 0;
 }
 
-.footer a {
+#footer a {
     text-decoration: none;
     color: var(--secondary-text-color);
     margin: 0 10px;
 }
 
-.footer a:hover {
+#footer a:hover {
     color: var(--accent-color);
 }
 
