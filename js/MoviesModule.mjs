@@ -1,4 +1,4 @@
-import { getData, renderListWithTemplate } from "./utils.mjs"
+import { renderListWithTemplate } from "./utils.mjs"
 
 // Template for movie card
 function movieCardTemplate(movie) {
@@ -12,25 +12,34 @@ function movieCardTemplate(movie) {
         </div>
     </div>`
 }
-
+ 
 // 
 export default class MoviesList {
-    constructor() {
+    constructor(selector, dataSourse) {
+        this.selector = selector;
+        this.dataSourse = dataSourse;
     }
 
     async init() {
-        const list = await this.popularMovies();
-        const firstFive = list.slice(0, 5);
-
         // Parent element
-        const element = document.querySelector(".best-movies")
-        renderListWithTemplate(movieCardTemplate, element, firstFive)
+        const element = document.querySelector(this.selector)
+        renderListWithTemplate(movieCardTemplate, element, this.dataSourse)
     }
+}
 
-    // Get popular movies
-    async popularMovies() {
-        let params = `/movie/top_rated?language=en-US&page=1`;
-        let data = await getData(params);
-        return data.results;
-    }
+
+// Get Genre ID
+export async function getGenreId(genreName) {
+    // Geting the list of all movie genres
+    let params = `/genre/movie/list?language=en`;
+    let data = await getData(params);
+
+    const genre = data.genres.find(genre => genre.name === genreName);
+
+    // Return genre ID or null  
+    if (genre) {
+        return genre.id;
+    } else {
+        return null;
+    }  
 }

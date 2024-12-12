@@ -8,21 +8,27 @@ function convertToJson(res) {
     }
   }
 
+export default class ExternalServices {
+  constructor() {
 
-// Used to get data from the server
-export async function getData(params) {
+  }
+
+  // Used to get data from the server
+  async getData(params) {
     const options = {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNjAyZWM2ZTkwZmJlYWNiZGRiMTMwYzk5YTMwN2FlMSIsIm5iZiI6MTczMzMwOTQ5MS4wMjQ5OTk5LCJzdWIiOiI2NzUwMzQzM2NiMWUxMjBjY2I1ZGQyNTQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.FD0MMfK7J-9D3S3T5wcpcYs4YJ8YYQrONAo2CxPjJ_w'
-        }
-      };
-      
-      const responce = await fetch(`${baseURL}${params}`, options);
-      const data = await convertToJson(responce);
-      return data;
- }
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNjAyZWM2ZTkwZmJlYWNiZGRiMTMwYzk5YTMwN2FlMSIsIm5iZiI6MTczMzMwOTQ5MS4wMjQ5OTk5LCJzdWIiOiI2NzUwMzQzM2NiMWUxMjBjY2I1ZGQyNTQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.FD0MMfK7J-9D3S3T5wcpcYs4YJ8YYQrONAo2CxPjJ_w'
+      }
+    };
+    
+    const responce = await fetch(`${baseURL}${params}`, options);
+    const data = await convertToJson(responce);
+    return data;
+  }
+}
+
 
  // Loads header and footer
 export async function loadHeaderFooter() {
@@ -52,7 +58,7 @@ async function loadTemplate(path) {
   }
 
 //
-export async function renderListWithTemplate(template, parentElement, list, position="afterbegin") {
-    const html = list.map(template);
+export async function renderListWithTemplate(template, parentElement, list, position="afterbegin") { 
+  const html = await list.map(template);
     parentElement.insertAdjacentHTML(position, html.join(""));
 }
