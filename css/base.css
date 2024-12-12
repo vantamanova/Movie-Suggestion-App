@@ -114,6 +114,9 @@ main {
 
 .best-movies,
 .best-series {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 50px;
     background-color: #FFFFFF;
     padding: 20px;
     border-radius: 8px;
@@ -122,8 +125,57 @@ main {
 
 .best-movies h2,
 .best-series h2 {
+    grid-row: 1/2;
+    grid-column: 1/6;
+    font-size: 30px;
+    margin: auto;
+}
+
+.best-movies p,
+.best-series p {
+    grid-row: 2/3;
+    grid-column: 1/6;
     font-size: 24px;
+    margin: auto;
+}
+
+/* Movie Card Container */
+.movie-card {
+    width: 100%;
+    max-width: 300px;
+    /* Restricts card width */
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    /* Ensures content stays within the card */
+    margin: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Movie Poster */
+.movie-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Movie Info Section */
+.movie-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.movie-info h3 {
+    font-size: 18px;
+    color: #333333;
     margin-bottom: 10px;
+}
+
+.movie-info p {
+    font-size: 14px;
+    color: #777777;
+    margin-bottom: 15px;
 }
 
 /* General Button Style */
