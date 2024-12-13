@@ -29,20 +29,19 @@ export function moviePageTemplate(movie) {
 export function seriesPageTemplate(tvShow) {
     return `
            <div class="movie-details-hero">
-            <img id="movie-poster" src="path-to-movie-poster.jpg" alt="Movie Poster">
+            <img id="movie-poster" src="https://image.tmdb.org/t/p/w500${tvShow.poster_path}" alt="${tvShow.name}">
             <div class="movie-details-info">
-                <h1 id="movie-title">Movie Title</h1>
-                <p id="movie-release-date">Release Date: <span>2024-01-01</span></p>
-                <p id="movie-rating">Rating: <span>8.5/10</span></p>
-                <p id="movie-genre">Genre: <span>Action, Adventure</span></p>
+                <h1 id="movie-title">${tvShow.name}</h1>
+                <p id="movie-release-date">Release Date: <span>${tvShow.first_air_date}</span></p>
+                <p id="movie-rating">Rating: <span>${tvShow.vote_average}/10</span></p>
+                <p id="movie-genre">Genre: <span>${tvShow.genres.map(genre => genre.name).join(', ')}</span></p>
             </div>
         </div>
 
         <div class="movie-details-main">
             <section class="movie-synopsis">
                 <h2>Synopsis</h2>
-                <p id="movie-synopsis">This is where the movie synopsis or description will go. It provides a brief
-                    overview of the movie's plot, themes, and key elements.</p>
+                <p id="movie-synopsis">${tvShow.overview}</p>
             </section>
 
             <section class="movie-actions">
@@ -64,7 +63,9 @@ export default class MovieDetails{
         console.log(params);
         const data = await moviesDataSourse.getData(params)
         console.log(data);
-        const templateHtml = moviePageTemplate(data)
+
+        const templateHtml = this.type === "movie" ? moviePageTemplate(data) : seriesPageTemplate(data)
+
         renderMovieDetails(templateHtml);
 
     }
