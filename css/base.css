@@ -233,7 +233,7 @@ button.outline:hover {
 }
 
 
-/* -------------------------------------------------------------- Movies Page -------------------------------------------------------------- */
+/* -------------------------------------------------------------- Movies / Series Page -------------------------------------------------------------- */
 .trending,
 .movies-list {
     background-color: #FFFFFF;
@@ -344,6 +344,119 @@ button.outline:hover {
     border-radius: 4px;
     cursor: pointer;
     margin-right: 10px;
+}
+
+
+/* -------------------------------------------------------------- One Movie / TV Show Page -------------------------------------------------------------- */
+/* Movie Section */
+.movie-section {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Hero Section */
+.movie-details-hero {
+    display: flex;
+    align-items: center;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.movie-details-hero img {
+    width: 250px;
+    height: auto;
+    border-radius: 8px 0 0 8px;
+}
+
+.movie-details-info {
+    padding: 20px;
+}
+
+.movie-details-info h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: var(--accent-color);
+}
+
+.movie-details-info p {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--secondary-text-color);
+}
+
+.movie-details-info span {
+    font-weight: bold;
+    color: var(--primary-text-color);
+}
+
+/* Main Section */
+.movie-details-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Synopsis Section */
+.movie-synopsis {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.movie-synopsis h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: var(--accent-color);
+}
+
+.movie-synopsis p {
+    font-size: 16px;
+    color: var(--secondary-text-color);
+}
+
+/* Actions Section */
+.movie-actions {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.movie-actions button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: var(--accent-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+}
+
+.movie-actions button:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.movie-actions .outline {
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+}
+
+.movie-actions .outline:hover {
+    background-color: var(--accent-color);
+    color: #FFFFFF;
 }
 
 

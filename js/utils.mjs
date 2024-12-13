@@ -10,7 +10,6 @@ function convertToJson(res) {
 
 export default class ExternalServices {
   constructor() {
-
   }
 
   // Used to get data from the server
