@@ -1,4 +1,5 @@
 import { renderListWithTemplate } from "./utils.mjs"
+import ExternalServices from "./utils.mjs";
 
 // Template for movie card
 function movieCardTemplate(movie) {
@@ -28,11 +29,12 @@ export default class MoviesList {
 }
 
 
-// Get Genre ID
-export async function getGenreId(genreName) {
+// Get Movie Genre ID
+export async function getGenreId(genreName, type) {
     // Geting the list of all movie genres
-    let params = `/genre/movie/list?language=en`;
-    let data = await getData(params);
+    let params = `/genre/${type}/list?language=en`;
+    const dataSourse = new ExternalServices();
+    let data = await dataSourse.getData(params);
 
     const genre = data.genres.find(genre => genre.name === genreName);
 
@@ -43,3 +45,4 @@ export async function getGenreId(genreName) {
         return null;
     }  
 }
+
