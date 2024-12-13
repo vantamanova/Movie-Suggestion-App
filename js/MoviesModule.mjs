@@ -9,7 +9,7 @@ function movieCardTemplate(movie) {
         <div class="movie-info">
             <h3>${movie.title}</h3>
             <p>${movie.overview}</p>
-            <button class="outline">View Details</button>
+            <button class="outline"data-id="${movie.id}" data-type="movie">View Details</button>
         </div>
     </div>`
 }
@@ -23,7 +23,7 @@ function seriesCardTemplate(movie) {
         <div class="movie-info">
             <h3>${movie.name}</h3>
             <p>${movie.overview}</p>
-            <button class="outline">View Details</button>
+            <button class="outline" data-id="${movie.id}" data-type="series">View Details</button>
         </div>
     </div>`
 }
@@ -36,15 +36,25 @@ export default class MoviesList {
     }
 
     async init() {
-        // Parent element
-        const element = document.querySelector(this.selector)
-        if (this.type == "movie") {
-            renderListWithTemplate(movieCardTemplate, element, this.dataSourse)            
+        const element = document.querySelector(this.selector);
+    
+        if (this.type === "movie") {
+            renderListWithTemplate(movieCardTemplate, element, this.dataSourse);
         } else {
-            renderListWithTemplate(seriesCardTemplate, element, this.dataSourse)  
+            renderListWithTemplate(seriesCardTemplate, element, this.dataSourse);
         }
-
+    
+        // Use event delegation
+        element.addEventListener("click", (event) => {
+            if (event.target.classList.contains("outline")) {
+                const id = event.target.getAttribute("data-id");
+                const type = event.target.getAttribute("data-type");
+                console.log(`Navigating to: moviepage.html?id=${id}&type=${type}`);
+                window.location.href = `moviepage.html?id=${id}&type=${type}`;
+            }
+        });
     }
+    
 }
 
 

@@ -53,16 +53,20 @@ export function seriesPageTemplate(tvShow) {
 }
 
 export default class MovieDetails{
-    constructor(movieId) {
+    constructor(movieId, type) {
         this.movieId = movieId;
+        this.type = type
     }
 
     async init() {
         const moviesDataSourse = new ExternalServices();
-        const data = await moviesDataSourse.getData(`/movie/${this.movieId}`)
+        const params = this.type === "movie" ? `/movie/${this.movieId}` : `/tv/${this.movieId}`;
+        console.log(params);
+        const data = await moviesDataSourse.getData(params)
         console.log(data);
         const templateHtml = moviePageTemplate(data)
         renderMovieDetails(templateHtml);
+
     }
 }
 

@@ -59,5 +59,6 @@ async function loadTemplate(path) {
 //
 export async function renderListWithTemplate(template, parentElement, list, position="afterbegin") { 
   const html = await list.map(template);
-    parentElement.insertAdjacentHTML(position, html.join(""));
+  //await list.map(element => console.log(template(element)));
+  parentElement.insertAdjacentHTML(position, html.join(""));
 }

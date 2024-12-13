@@ -5,12 +5,19 @@ import ExternalServices from "./utils.mjs";
 loadHeaderFooter();
 
 // get movie ID from somewhere
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+const type = params.get("type");
 
-let movieId = 912649;
+console.log(id);
+console.log(type);
+
+//let movieId = 912649;
 
 // find movie by ID
 
 // display this movie
 
-const movieDetails = new MovieDetails(movieId);
+const movieDetails = new MovieDetails(id, type);
 movieDetails.init();
+
