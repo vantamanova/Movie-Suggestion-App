@@ -7,24 +7,43 @@ function movieCardTemplate(movie) {
     <div class="movie-card">
         <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.original_title} poster">
         <div class="movie-info">
-            <h3>${movie.original_title}</h3>
+            <h3>${movie.title}</h3>
             <p>${movie.overview}</p>
             <button class="outline">View Details</button>
         </div>
     </div>`
 }
- 
+
+
+// Template for series card
+function seriesCardTemplate(movie) {
+    return `
+    <div class="movie-card">
+        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.original_title} poster">
+        <div class="movie-info">
+            <h3>${movie.name}</h3>
+            <p>${movie.overview}</p>
+            <button class="outline">View Details</button>
+        </div>
+    </div>`
+}
 // 
 export default class MoviesList {
-    constructor(selector, dataSourse) {
+    constructor(selector, dataSourse, type) {
         this.selector = selector;
         this.dataSourse = dataSourse;
+        this.type = type
     }
 
     async init() {
         // Parent element
         const element = document.querySelector(this.selector)
-        renderListWithTemplate(movieCardTemplate, element, this.dataSourse)
+        if (this.type == "movie") {
+            renderListWithTemplate(movieCardTemplate, element, this.dataSourse)            
+        } else {
+            renderListWithTemplate(seriesCardTemplate, element, this.dataSourse)  
+        }
+
     }
 }
 

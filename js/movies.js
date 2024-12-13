@@ -24,9 +24,9 @@ document.getElementById("apply-filters").addEventListener("click", async () => {
 
         const moviesDataSourse = new ExternalServices();
         let moviesData = await moviesDataSourse.getData(`/discover/movie?with_genres=${category}`);
-        moviesData = moviesData.results.slice(0, 10);
+        moviesData = moviesData.results.slice(0, 20);
 
-        let movieList = new MoviesList(".movies-grid", moviesData);
+        let movieList = new MoviesList(".movies-grid", moviesData, "movie");
         movieList.init();
     } catch (error) {
         console.error("Error:", error);
