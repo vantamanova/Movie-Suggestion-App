@@ -1,5 +1,5 @@
 export async function getStreamingAvailability(imdbId, country = 'us') {
-    const url = `https://streaming-availability.p.rapidapi.com/shows/${imdbId}?series_granularity=show&output_language=en&country=ae`;
+    const url = `https://streaming-availability.p.rapidapi.com/shows/${imdbId}?series_granularity=show&output_language=en&country=us`;
     const options = {
         method: 'GET',
         headers: {
@@ -11,7 +11,7 @@ export async function getStreamingAvailability(imdbId, country = 'us') {
     try {
         const response = await fetch(url, options);
         const result = await response.json();
-        console.log(result);
+        return result
     } catch (error) {
         console.error(error);
     }

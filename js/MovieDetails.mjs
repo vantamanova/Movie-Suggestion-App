@@ -69,23 +69,92 @@ export default class MovieDetails{
         this.imdbId = imdbId;
     }
 
-    async init() {
-        const moviesDataSourse = new ExternalServices();
-        const params = this.type === "movie" ? `/movie/${this.movieId}` : `/tv/${this.movieId}`;
-        console.log(params);
-        const data = await moviesDataSourse.getData(params)
-        console.log(data);
+// Main initialization function
+async init() {
+    try {
+        const moviesDataSource = new ExternalServices();
 
+        // Determine API endpoint based on type
+        const params = this.type === "movie" ? `/movie/${this.movieId}` : `/tv/${this.movieId}`;
+        console.log(`Fetching details for: ${params}`);
+
+        // Fetch movie or series data
+        const data = await moviesDataSource.getData(params);
+        console.log("Fetched Data:", data);
+
+        // Render the page content using appropriate template
         const templateHtml = this.type === "movie" ? moviePageTemplate(data) : seriesPageTemplate(data);
         renderMovieDetails(templateHtml);
 
-        const element = document.querySelector(".streaming-platforms");
-        element.addEventListener("click", async() => {
-            //await getStreamingPlatforms(this.movieId, this.type) 
-            await getStreamingAvailability(this.imdbId, 'us')   
-        })
-        
+        // Attach event listener to the "Streaming Platforms" button
+        this.attachStreamingPlatformsListener();
+    } catch (error) {
+        console.error("Error initializing details page:", error);
     }
+}
+
+// Attach event listener for fetching and displaying streaming platforms
+attachStreamingPlatformsListener() {
+    const streamingButton = document.querySelector(".streaming-platforms");
+
+    if (streamingButton) {
+        streamingButton.addEventListener("click", async () => {
+            try {
+                await this.displayStreamingPlatforms();
+            } catch (error) {
+                console.error("Error displaying streaming platforms:", error);
+            }
+        });
+    } else {
+        console.error("Element '.streaming-platforms' not found.");
+    }
+}
+
+// Fetch and display streaming platforms
+async displayStreamingPlatforms() {
+    try {
+        const streamingInfoSection = document.getElementById("streaming-info");
+        const platformsList = document.getElementById("platforms-list");
+    
+        // Fetch streaming availability for the current IMDb ID
+        const platforms = await getStreamingAvailability(this.imdbId, 'us'); // Checking for US availability
+        console.log("Platforms object:", platforms);
+    
+        // Check if streaming options are available
+        if (platforms && Object.keys(platforms.streamingOptions).length > 0) {
+            const usPlatforms = platforms.streamingOptions.us || [];
+    
+            // Generate HTML for the available platforms
+            const platformLinks = usPlatforms
+                .map(option => `<a href="${option.link}" target="_blank">${option.service.name} (${option.type})</a>`)
+                .join("<br>");
+    
+            // Update the streaming-info section with the platforms
+            platformsList.innerHTML = platformLinks;
+    
+            // Make the streaming-info section visible
+            if (streamingInfoSection) {
+                streamingInfoSection.classList.add("open");
+            } else {
+                console.error("Element '#streaming-info' not found.");
+            }
+        } else {
+            console.log("No streaming options available for this title.");
+    
+            // Update the streaming-info section with a "No options" message
+            platformsList.textContent = "No streaming platforms available for this title.";
+    
+            // Make the streaming-info section visible
+            if (streamingInfoSection) {
+                streamingInfoSection.classList.add("open");
+            }
+        }
+    } catch (error) {
+        console.error("Error fetching streaming platforms:", error);
+    }
+}
+    
+    
 }
 
 async function renderMovieDetails(template) {

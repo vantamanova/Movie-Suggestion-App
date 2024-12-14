@@ -422,7 +422,7 @@ button.outline:hover {
 /* Actions Section */
 .movie-actions {
     margin-top: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     display: flex;
     justify-content: center;
     gap: 15px;
@@ -459,6 +459,36 @@ button.outline:hover {
     color: #FFFFFF;
 }
 
+.streaming-info {
+    margin-bottom: 50px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    display: none;
+}
+
+.streaming-info.open {
+    display: block;
+}
+
+.streaming-info h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: var(--primary-text-color);
+}
+
+#platforms-list a {
+    color: var(--accent-color);
+    text-decoration: none;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+#platforms-list a:hover {
+    text-decoration: underline;
+}
 
 /* Responsive Styles (Mobile) */
 @media (max-width: 768px) {

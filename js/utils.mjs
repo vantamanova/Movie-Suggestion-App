@@ -33,7 +33,7 @@ export default class ExternalServices {
                 data.results.map(async (item) => {
                     if (!item.imdb_id) {
                         // Determine if the item is a movie or a series
-                        const type = item.title ? "movie" : "tv"; // Movies have 'title', series have 'name'
+                        const type = item.title ? "movie" : "tv"; 
 
                         // Fetch details from the appropriate endpoint
                         const detailsResponse = await fetch(`${baseURL}/${type}/${item.id}`, options);
@@ -44,7 +44,7 @@ export default class ExternalServices {
                             imdb_id: details.imdb_id // Add imdb_id to the item
                         };
                     }
-                    return item; // If imdb_id exists, return the item as-is
+                    return item; // If imdb_id exists, return the item
                 })
             );
             return { ...data, results: enrichedResults }; // Return enriched results
