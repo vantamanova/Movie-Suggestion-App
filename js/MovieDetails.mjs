@@ -1,4 +1,5 @@
 import ExternalServices from "./utils.mjs";
+import { getStreamingAvailability } from "./StreamingAvailability.mjs";
 
 
 export function moviePageTemplate(movie) {
@@ -20,8 +21,13 @@ export function moviePageTemplate(movie) {
             </section>
 
             <section class="movie-actions">
-                <button class="outline">Watch Trailer</button>
+                <button class="outline streaming-platforms">Streaming Platforms</button>
                 <button class="outline">Add to Favorites</button>
+            </section>
+
+            <section class="streaming-info" id="streaming-info">
+                <h2>Available On</h2>
+                <p id="platforms-list">Click the button above to see streaming platforms.</p>
             </section>
         </div>`
 }
@@ -45,16 +51,22 @@ export function seriesPageTemplate(tvShow) {
             </section>
 
             <section class="movie-actions">
-                <button class="outline">Watch Trailer</button>
+                <button class="outline streaming-platforms">Streaming Platforms</button>
                 <button class="outline">Add to Favorites</button>
+            </section>
+
+            <section class="streaming-info" id="streaming-info">
+                <h2>Available On</h2>
+                <p id="platforms-list">Click the button above to see streaming platforms.</p>
             </section>
         </div>`
 }
 
 export default class MovieDetails{
-    constructor(movieId, type) {
+    constructor(movieId, type, imdbId) {
         this.movieId = movieId;
         this.type = type
+        this.imdbId = imdbId;
     }
 
     async init() {
@@ -64,10 +76,15 @@ export default class MovieDetails{
         const data = await moviesDataSourse.getData(params)
         console.log(data);
 
-        const templateHtml = this.type === "movie" ? moviePageTemplate(data) : seriesPageTemplate(data)
-
+        const templateHtml = this.type === "movie" ? moviePageTemplate(data) : seriesPageTemplate(data);
         renderMovieDetails(templateHtml);
 
+        const element = document.querySelector(".streaming-platforms");
+        element.addEventListener("click", async() => {
+            //await getStreamingPlatforms(this.movieId, this.type) 
+            await getStreamingAvailability(this.imdbId, 'us')   
+        })
+        
     }
 }
 

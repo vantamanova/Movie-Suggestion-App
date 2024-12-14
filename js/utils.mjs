@@ -15,17 +15,47 @@ export default class ExternalServices {
   // Used to get data from the server
   async getData(params) {
     const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNjAyZWM2ZTkwZmJlYWNiZGRiMTMwYzk5YTMwN2FlMSIsIm5iZiI6MTczMzMwOTQ5MS4wMjQ5OTk5LCJzdWIiOiI2NzUwMzQzM2NiMWUxMjBjY2I1ZGQyNTQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.FD0MMfK7J-9D3S3T5wcpcYs4YJ8YYQrONAo2CxPjJ_w'
-      }
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNjAyZWM2ZTkwZmJlYWNiZGRiMTMwYzk5YTMwN2FlMSIsIm5iZiI6MTczMzMwOTQ5MS4wMjQ5OTk5LCJzdWIiOiI2NzUwMzQzM2NiMWUxMjBjY2I1ZGQyNTQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.FD0MMfK7J-9D3S3T5wcpcYs4YJ8YYQrONAo2CxPjJ_w'
+        }
     };
-    
-    const responce = await fetch(`${baseURL}${params}`, options);
-    const data = await convertToJson(responce);
-    return data;
-  }
+
+    try {
+        // Fetch the main data
+        const response = await fetch(`${baseURL}${params}`, options);
+        const data = await convertToJson(response);
+
+        // If imdb_id is missing, enrich results for both movies and series
+        if (data.results) {
+            const enrichedResults = await Promise.all(
+                data.results.map(async (item) => {
+                    if (!item.imdb_id) {
+                        // Determine if the item is a movie or a series
+                        const type = item.title ? "movie" : "tv"; // Movies have 'title', series have 'name'
+
+                        // Fetch details from the appropriate endpoint
+                        const detailsResponse = await fetch(`${baseURL}/${type}/${item.id}`, options);
+                        const details = await convertToJson(detailsResponse);
+
+                        return {
+                            ...item,
+                            imdb_id: details.imdb_id // Add imdb_id to the item
+                        };
+                    }
+                    return item; // If imdb_id exists, return the item as-is
+                })
+            );
+            return { ...data, results: enrichedResults }; // Return enriched results
+        }
+
+        return data; // Return the original data if no results field is found
+    } catch (error) {
+        console.log("Error fetching data:", error);
+        throw error;
+    }
+}
 }
 
 

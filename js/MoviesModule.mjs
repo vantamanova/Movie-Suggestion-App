@@ -9,7 +9,7 @@ function movieCardTemplate(movie) {
         <div class="movie-info">
             <h3>${movie.title}</h3>
             <p>${movie.overview}</p>
-            <button class="outline"data-id="${movie.id}" data-type="movie">View Details</button>
+            <button class="outline" data-id="${movie.id}" data-type="movie" data-imdbId="${movie.imdb_id}">View Details</button>
         </div>
     </div>`
 }
@@ -23,7 +23,7 @@ function seriesCardTemplate(movie) {
         <div class="movie-info">
             <h3>${movie.name}</h3>
             <p>${movie.overview}</p>
-            <button class="outline" data-id="${movie.id}" data-type="series">View Details</button>
+            <button class="outline" data-id="${movie.id}" data-type="series" data-imdbId="${movie.imbd_id}">View Details</button>
         </div>
     </div>`
 }
@@ -49,8 +49,9 @@ export default class MoviesList {
             if (event.target.classList.contains("outline")) {
                 const id = event.target.getAttribute("data-id");
                 const type = event.target.getAttribute("data-type");
+                const imdbId = event.target.getAttribute("data-imdbId");
                 console.log(`Navigating to: moviepage.html?id=${id}&type=${type}`);
-                window.location.href = `moviepage.html?id=${id}&type=${type}`;
+                window.location.href = `moviepage.html?id=${id}&type=${type}&imdbId=${imdbId}`;
             }
         });
     }
