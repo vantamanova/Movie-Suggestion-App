@@ -117,7 +117,7 @@ async displayStreamingPlatforms() {
         const platformsList = document.getElementById("platforms-list");
     
         // Fetch streaming availability for the current IMDb ID
-        const platforms = await getStreamingAvailability(this.imdbId, 'us'); // Checking for US availability
+        const platforms = await getStreamingAvailability(this.imdbId, 'us'); // Checking for US availability because there are more data then ae
         console.log("Platforms object:", platforms);
     
         // Check if streaming options are available
@@ -135,8 +135,6 @@ async displayStreamingPlatforms() {
             // Make the streaming-info section visible
             if (streamingInfoSection) {
                 streamingInfoSection.classList.add("open");
-            } else {
-                console.error("Element '#streaming-info' not found.");
             }
         } else {
             console.log("No streaming options available for this title.");
