@@ -1,94 +1,91 @@
-const baseURL = "https://api.themoviedb.org/3"
+const baseURL = "https://api.themoviedb.org/3";
 
 function convertToJson(res) {
     if (res.ok) {
-      return res.json();
+        return res.json();
     } else {
-      throw new Error("Bad Response");
+        throw new Error("Bad Response");
     }
-  }
+}
 
 export default class ExternalServices {
-  constructor() {
-  }
+  constructor() {}
 
-  // Used to get data from the server
   async getData(params) {
-    const options = {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNjAyZWM2ZTkwZmJlYWNiZGRiMTMwYzk5YTMwN2FlMSIsIm5iZiI6MTczMzMwOTQ5MS4wMjQ5OTk5LCJzdWIiOiI2NzUwMzQzM2NiMWUxMjBjY2I1ZGQyNTQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.FD0MMfK7J-9D3S3T5wcpcYs4YJ8YYQrONAo2CxPjJ_w'
-        }
-    };
-
     try {
-        // Fetch the main data
-        const response = await fetch(`${baseURL}${params}`, options);
-        const data = await convertToJson(response);
+      const options = this.getRequestOptions();
+      const data = await this.fetchData(`${baseURL}${params}`, options);
 
-        // If imdb_id is missing, enrich results for both movies and series
-        if (data.results) {
-            const enrichedResults = await Promise.all(
-                data.results.map(async (item) => {
-                    if (!item.imdb_id) {
-                        // Determine if the item is a movie or a series
-                        const type = item.title ? "movie" : "tv"; 
+      if (data.results) {
+        data.results = await this.enrichResults(data.results, options);
+      }
 
-                        // Fetch details from the appropriate endpoint
-                        const detailsResponse = await fetch(`${baseURL}/${type}/${item.id}`, options);
-                        const details = await convertToJson(detailsResponse);
-
-                        return {
-                            ...item,
-                            imdb_id: details.imdb_id // Add imdb_id to the item
-                        };
-                    }
-                    return item; // If imdb_id exists, return the item
-                })
-            );
-            return { ...data, results: enrichedResults }; // Return enriched results
-        }
-
-        return data; // Return the original data if no results field is found
+      return data;
     } catch (error) {
-        console.log("Error fetching data:", error);
+        console.error("Error fetching data:", error);
         throw error;
-    }
-}
+      }
+  }
+
+  // Get request options
+  getRequestOptions() {
+    return {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNjAyZWM2ZTkwZmJlYWNiZGRiMTMwYzk5YTMwN2FlMSIsIm5iZiI6MTczMzMwOTQ5MS4wMjQ5OTk5LCJzdWIiOiI2NzUwMzQzM2NiMWUxMjBjY2I1ZGQyNTQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.FD0MMfK7J-9D3S3T5wcpcYs4YJ8YYQrONAo2CxPjJ_w",
+      },
+    };
+  }
+
+  // Fetch data from the API
+  async fetchData(url, options) {
+    const response = await fetch(url, options);
+    return convertToJson(response);
+  }
+
+  // Adds missing imdb_id
+  async enrichResults(results, options) {
+    return Promise.all(
+      results.map(async (item) => {
+        if (!item.imdb_id) {
+          const type = item.title ? "movie" : "tv";
+          const endpoint = type === "movie" ? `${baseURL}/movie/${item.id}` : `${baseURL}/tv/${item.id}/external_ids`;
+          const details = await this.fetchData(endpoint, options);
+          return {
+            ...item,
+            imdb_id: type === "movie" ? details.imdb_id : details.imdb_id || null,
+          };
+        }
+        return item;
+      })
+    );
+  }
 }
 
-
- // Loads header and footer
+// Loads Header and Footer
 export async function loadHeaderFooter() {
-    //Load the header and footer templates in from our partials
-    const headerTemplate = await loadTemplate("partials/header.html");
-    const footerTemplate = await loadTemplate("partials/footer.html");
-  
-    // Grab the header and footer elements out of the DOM.
-    const headerElement = document.getElementById("header");
-    const footerElement = document.getElementById("footer");
-  
-    // Render the header and footer
-    renderWithTemplate(headerTemplate, headerElement);
-    renderWithTemplate(footerTemplate, footerElement);
-  }
+  const headerTemplate = await loadTemplate("partials/header.html");
+  const footerTemplate = await loadTemplate("partials/footer.html");
 
- // Renders template 
+  renderWithTemplate(headerTemplate, document.getElementById("header"));
+  renderWithTemplate(footerTemplate, document.getElementById("footer"));
+}
+
+// Renders one element Using Template
 export function renderWithTemplate(template, parentElement) {
-    parentElement.insertAdjacentHTML("afterbegin", template);
-  }
+  parentElement.insertAdjacentHTML("afterbegin", template);
+}
 
-// Loads template
+// Loads the template from partials (maybe I need to use it for other templates as well)
 async function loadTemplate(path) {
-    const responce = await fetch(path);
-    const template = await responce.text();
-    return template;
-  }
+  const response = await fetch(path);
+  return response.text();
+}
 
-//
-export async function renderListWithTemplate(template, parentElement, list, position="afterbegin") { 
-  const html = await list.map(template);
-  //await list.map(element => console.log(template(element)));
-  parentElement.insertAdjacentHTML(position, html.join(""));
+// Renders list of elements
+export async function renderListWithTemplate(template, parentElement, list, position = "afterbegin") {
+  const html = list.map(template).join("");
+  parentElement.insertAdjacentHTML(position, html);
 }

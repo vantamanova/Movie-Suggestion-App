@@ -23,7 +23,7 @@ function seriesCardTemplate(movie) {
         <div class="movie-info">
             <h3>${movie.name}</h3>
             <p>${movie.overview}</p>
-            <button class="outline" data-id="${movie.id}" data-type="series" data-imdbId="${movie.imbd_id}">View Details</button>
+            <button class="outline" data-id="${movie.id}" data-type="series" data-imdbId="${movie.imdb_id}">View Details</button>
         </div>
     </div>`
 }

@@ -8,9 +8,7 @@ const moviesElement = ".best-movies";
 
 const moviesDataSourse = new ExternalServices();
 let moviesData = await moviesDataSourse.getData(`/movie/top_rated?language=en-US&page=1`);
-moviesData.results.forEach(movie => {
-    console.log(movie);
-});
+
 moviesData = moviesData.results.slice(0, 5); 
 
 let movieList = new MoviesList(moviesElement, moviesData, "movie");
