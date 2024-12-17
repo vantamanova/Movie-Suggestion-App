@@ -1,5 +1,6 @@
 import ExternalServices from "./utils.mjs";
 import { getStreamingAvailability } from "./StreamingAvailability.mjs";
+import { addToFavorites } from "./utils.mjs";
 
 
 export function moviePageTemplate(movie) {
@@ -22,7 +23,7 @@ export function moviePageTemplate(movie) {
 
             <section class="movie-actions">
                 <button class="outline streaming-platforms">Streaming Platforms</button>
-                <button class="outline">Add to Favorites</button>
+                <button class="outline add-to-favorites">Add to Favorites</button>
             </section>
 
             <section class="streaming-info" id="streaming-info">
@@ -52,7 +53,7 @@ export function seriesPageTemplate(tvShow) {
 
             <section class="movie-actions">
                 <button class="outline streaming-platforms">Streaming Platforms</button>
-                <button class="outline">Add to Favorites</button>
+                <button class="outline add-to-favorites">Add to Favorites</button>
             </section>
 
             <section class="streaming-info" id="streaming-info">
@@ -69,90 +70,113 @@ export default class MovieDetails{
         this.imdbId = imdbId;
     }
 
-// Main initialization function
-async init() {
-    try {
-        const moviesDataSource = new ExternalServices();
+    // Main initialization function
+    async init() {
+        try {
+            const moviesDataSource = new ExternalServices();
 
-        // Determine API endpoint based on type
-        const params = this.type === "movie" ? `/movie/${this.movieId}` : `/tv/${this.movieId}`;
-        console.log(`Fetching details for: ${params}`);
+            // Determine API endpoint based on type
+            const params = this.type === "movie" ? `/movie/${this.movieId}` : `/tv/${this.movieId}`;
+            console.log(`Fetching details for: ${params}`);
 
-        // Fetch movie or series data
-        const data = await moviesDataSource.getData(params);
-        console.log("Fetched Data:", data);
+            // Fetch movie or series data
+            const data = await moviesDataSource.getData(params);
+            console.log("Fetched Data:", data);
 
-        // Render the page content using appropriate template
-        const templateHtml = this.type === "movie" ? moviePageTemplate(data) : seriesPageTemplate(data);
-        renderMovieDetails(templateHtml);
+            // Render the page content using appropriate template
+            const templateHtml = this.type === "movie" ? moviePageTemplate(data) : seriesPageTemplate(data);
+            renderMovieDetails(templateHtml);
 
-        // Attach event listener to the "Streaming Platforms" button
-        this.attachStreamingPlatformsListener();
-    } catch (error) {
-        console.error("Error initializing details page:", error);
-    }
-}
+            // Attach event listener to the "Streaming Platforms" button
+            this.attachStreamingPlatformsListener();
 
-// Attach event listener for fetching and displaying streaming platforms
-attachStreamingPlatformsListener() {
-    const streamingButton = document.querySelector(".streaming-platforms");
-
-    if (streamingButton) {
-        streamingButton.addEventListener("click", async () => {
-            try {
-                await this.displayStreamingPlatforms();
-            } catch (error) {
-                console.error("Error displaying streaming platforms:", error);
-            }
-        });
-    } else {
-        console.error("Element '.streaming-platforms' not found.");
-    }
-}
-
-// Fetch and display streaming platforms
-async displayStreamingPlatforms() {
-    try {
-        const streamingInfoSection = document.getElementById("streaming-info");
-        const platformsList = document.getElementById("platforms-list");
-    
-        // Fetch streaming availability for the current IMDb ID
-        const platforms = await getStreamingAvailability(this.imdbId, 'us'); // Checking for US availability because there are more data then ae
-        console.log("Platforms object:", platforms);
-    
-        // Check if streaming options are available
-        if (platforms && Object.keys(platforms.streamingOptions).length > 0) {
-            const usPlatforms = platforms.streamingOptions.us || [];
-    
-            // Generate HTML for the available platforms
-            const platformLinks = usPlatforms
-                .map(option => `<a href="${option.link}" target="_blank">${option.service.name} (${option.type})</a>`)
-                .join("<br>");
-    
-            // Update the streaming-info section with the platforms
-            platformsList.innerHTML = platformLinks;
-    
-            // Make the streaming-info section visible
-            if (streamingInfoSection) {
-                streamingInfoSection.classList.add("open");
-            }
-        } else {
-            console.log("No streaming options available for this title.");
-    
-            // Update the streaming-info section with a "No options" message
-            platformsList.textContent = "No streaming platforms available for this title.";
-    
-            // Make the streaming-info section visible
-            if (streamingInfoSection) {
-                streamingInfoSection.classList.add("open");
-            }
+            // Attach event listener to the "Add to Favourite" button
+            console.log("Favourite: ", this.movieId, this.type, this.imdbId)
+            this.addToFavouriteListener(data)
+        } catch (error) {
+            console.error("Error initializing details page:", error);
         }
-    } catch (error) {
-        console.error("Error fetching streaming platforms:", error);
     }
-}
+
+    // Attach event listener for fetching and displaying streaming platforms
+    attachStreamingPlatformsListener() {
+        const streamingButton = document.querySelector(".streaming-platforms");
+
+        if (streamingButton) {
+            streamingButton.addEventListener("click", async () => {
+                try {
+                    await this.displayStreamingPlatforms();
+                } catch (error) {
+                    console.error("Error displaying streaming platforms:", error);
+                }
+            });
+        } else {
+            console.error("Element '.streaming-platforms' not found.");
+        }
+    }
+
+    // Fetch and display streaming platforms
+    async displayStreamingPlatforms() {
+        try {
+            const streamingInfoSection = document.getElementById("streaming-info");
+            const platformsList = document.getElementById("platforms-list");
+        
+            // Fetch streaming availability for the current IMDb ID
+            const platforms = await getStreamingAvailability(this.imdbId, 'us'); // Checking for US availability because there are more data then ae
+            console.log("Platforms object:", platforms);
+        
+            // Check if streaming options are available
+            if (platforms && Object.keys(platforms.streamingOptions).length > 0) {
+                const usPlatforms = platforms.streamingOptions.us || [];
+        
+                // Generate HTML for the available platforms
+                const platformLinks = usPlatforms
+                    .map(option => `<a href="${option.link}" target="_blank">${option.service.name} (${option.type})</a>`)
+                    .join("<br>");
+        
+                // Update the streaming-info section with the platforms
+                platformsList.innerHTML = platformLinks;
+        
+                // Make the streaming-info section visible
+                if (streamingInfoSection) {
+                    streamingInfoSection.classList.add("open");
+                }
+            } else {
+                console.log("No streaming options available for this title.");
+        
+                // Update the streaming-info section with a "No options" message
+                platformsList.textContent = "No streaming platforms available for this title.";
+        
+                // Make the streaming-info section visible
+                if (streamingInfoSection) {
+                    streamingInfoSection.classList.add("open");
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching streaming platforms:", error);
+        }
+    }
     
-    
+    // Attach event Listener to "add to Favourite"
+    addToFavouriteListener(movieData) {
+        const favoriteButton = document.querySelector(".add-to-favorites");
+
+        if (favoriteButton){
+            favoriteButton.addEventListener("click", () => {
+                // Construct movie object for favorites
+                const movie = {
+                    id: movieData.id,
+                    title: this.type === "movie" ? movieData.title : movieData.name,
+                    poster_path: movieData.poster_path,
+                    vote_average: movieData.vote_average,
+                    release_date: this.type === "movie" ? movieData.release_date : movieData.first_air_date,
+                };
+                addToFavorites(movie);      
+            });
+        } else {
+            console.error("Element '.add-to-favorites' not found.");
+        }       
+    }
 }
 
 async function renderMovieDetails(template) {

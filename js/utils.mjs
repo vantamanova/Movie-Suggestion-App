@@ -89,3 +89,34 @@ export async function renderListWithTemplate(template, parentElement, list, posi
   const html = list.map(template).join("");
   parentElement.insertAdjacentHTML(position, html);
 }
+
+// Adds movie to favourite using local Storage
+export function addToFavorites(movie) {
+  // Get existing favorites from Local Storage
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  // Check if the movie is already in the favorites
+  const isAlreadyFavorite = favorites.some(fav => fav.id === movie.id);
+  // Replace alert with showToast
+  if (!isAlreadyFavorite) {
+    favorites.push(movie);
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    showToast("Movie added to favorites!");
+  } else {
+    showToast("This movie is already in your favorites!");
+  }
+}
+
+export function showToast(message) {
+  const toast = document.createElement("div");
+  toast.classList.add("toast");
+  toast.textContent = message;
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+      toast.remove();
+  }, 3000);
+}
+
+

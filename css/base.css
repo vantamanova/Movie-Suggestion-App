@@ -143,7 +143,6 @@ main {
 .movie-card {
     width: 100%;
     max-width: 300px;
-    /* Restricts card width */
     background-color: #FFFFFF;
     border-radius: 8px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -158,6 +157,11 @@ main {
     width: 100%;
     height: auto;
     display: block;
+}
+
+.movie-card img:hover {
+    transform: scale(1.05) rotateY(5deg);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Movie Info Section */
@@ -459,6 +463,24 @@ button.outline:hover {
     color: #FFFFFF;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.streaming-info.open {
+    animation: fadeIn 0.6s ease-out;
+    display: block;
+}
+
+
 .streaming-info {
     margin-bottom: 50px;
     padding: 20px;
@@ -489,6 +511,45 @@ button.outline:hover {
 #platforms-list a:hover {
     text-decoration: underline;
 }
+
+/* Toast container */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    animation: fadeInOut 3s ease forwards;
+    opacity: 0;
+}
+
+/* Fade-in and fade-out animation */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
 
 /* Responsive Styles (Mobile) */
 @media (max-width: 768px) {
