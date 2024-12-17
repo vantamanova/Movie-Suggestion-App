@@ -8,7 +8,6 @@ loadHeaderFooter(() => {
 // Parse the search query from the URL
 const params = new URLSearchParams(window.location.search);
 const query = params.get("query");
-console.log("search.js query: ", query);
 
 const resultsContainer = document.getElementById("results-container");
 
@@ -32,9 +31,6 @@ async function fetchSearchResults(query) {
             externalServices.getData(movieSearchParams),
             externalServices.getData(seriesSearchParams),
         ]);
-
-        console.log("Movies: ", movieData);
-        console.log("Series: ", seriesData);
 
         // Merge movie and series results
         const combinedResults = [

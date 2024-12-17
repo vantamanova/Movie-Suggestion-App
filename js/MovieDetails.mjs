@@ -77,11 +77,9 @@ export default class MovieDetails{
 
             // Determine API endpoint based on type
             const params = this.type === "movie" ? `/movie/${this.movieId}` : `/tv/${this.movieId}`;
-            console.log(`Fetching details for: ${params}`);
 
             // Fetch movie or series data
             const data = await moviesDataSource.getData(params);
-            console.log("Fetched Data:", data);
 
             // Render the page content using appropriate template
             const templateHtml = this.type === "movie" ? moviePageTemplate(data) : seriesPageTemplate(data);
@@ -91,7 +89,6 @@ export default class MovieDetails{
             this.attachStreamingPlatformsListener();
 
             // Attach event listener to the "Add to Favourite" button
-            console.log("Favourite: ", this.movieId, this.type, this.imdbId)
             this.addToFavouriteListener(data)
         } catch (error) {
             console.error("Error initializing details page:", error);
@@ -123,8 +120,7 @@ export default class MovieDetails{
         
             // Fetch streaming availability for the current IMDb ID
             const platforms = await getStreamingAvailability(this.imdbId, 'us'); // Checking for US availability because there are more data then ae
-            console.log("Platforms object:", platforms);
-        
+
             // Check if streaming options are available
             if (platforms && Object.keys(platforms.streamingOptions).length > 0) {
                 const usPlatforms = platforms.streamingOptions.us || [];

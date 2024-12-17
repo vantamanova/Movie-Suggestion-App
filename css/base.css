@@ -30,7 +30,7 @@ body {
     margin: auto;
 }
 
-/* Header Styles */
+/*-------------- Header Styles --------------*/
 header {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -48,7 +48,7 @@ header {
 header .logo {
     font-size: 24px;
     font-weight: bold;
-    color: #333333;
+    color: var(--primary-text-color);
 }
 
 header .search-bar {
@@ -62,6 +62,13 @@ header .search-bar input {
     border: 1px solid var(--neutral-highlight-color);
     border-radius: 4px;
     font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+header .search-bar input:focus {
+    width: 300px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    outline: none;
 }
 
 header .search-bar button {
@@ -93,7 +100,7 @@ header nav a:hover {
     color: var(--accent-color);
 }
 
-/* Hero Section */
+/*-------------- Hero Section --------------*/
 .hero {
     position: relative;
     height: 500px;
@@ -105,7 +112,7 @@ header nav a:hover {
     align-items: center;
 }
 
-/* Main Content */
+/*-------------- Main Content --------------*/
 main {
     display: grid;
     gap: 30px;
@@ -139,7 +146,7 @@ main {
     margin: auto;
 }
 
-/* Movie Card Container */
+/*-------------- Movie Card Container --------------*/
 .movie-card {
     width: 100%;
     max-width: 300px;
@@ -147,12 +154,11 @@ main {
     border-radius: 8px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    /* Ensures content stays within the card */
     margin: 10px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Movie Poster */
+/*-------------- Movie Poster --------------*/
 .movie-card img {
     width: 100%;
     height: auto;
@@ -164,7 +170,7 @@ main {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Movie Info Section */
+/*-------------- Movie Info Section --------------*/
 .movie-info {
     padding: 15px;
     text-align: center;
@@ -182,7 +188,7 @@ main {
     margin-bottom: 15px;
 }
 
-/* General Button Style */
+/*-------------- General Button Style --------------*/
 button {
     padding: 10px 20px;
     background-color: var(--accent-color);
@@ -196,14 +202,12 @@ button {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover Effect */
 button:hover {
     background-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Outline Button */
 button.outline {
     background-color: transparent;
     color: var(--accent-color);
@@ -216,7 +220,7 @@ button.outline:hover {
 }
 
 
-/* Footer */
+/*-------------- Footer --------------*/
 #footer {
     background-color: #FFFFFF;
     text-align: center;
@@ -247,7 +251,7 @@ button.outline:hover {
     text-align: center;
 }
 
-/* Page Title */
+/*-------------- Page Title --------------*/
 .page-title {
     text-align: center;
     padding: 20px;
@@ -266,7 +270,7 @@ button.outline:hover {
     color: var(--secondary-text-color);
 }
 
-/* Movies Grid */
+/*-------------- Movies Grid --------------*/
 .movies-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -300,10 +304,7 @@ button.outline:hover {
     margin-bottom: 15px;
 }
 
-
-
-
-/* Filterrs */
+/*-------------- Filterrs --------------*/
 .filters {
     background-color: #FFFFFF;
     padding: 20px;
@@ -352,7 +353,7 @@ button.outline:hover {
 
 
 /* -------------------------------------------------------------- One Movie / TV Show Page -------------------------------------------------------------- */
-/* Movie Section */
+/*-------------- Movie Section --------------*/
 .movie-section {
     margin-top: 20px;
     display: flex;
@@ -360,7 +361,6 @@ button.outline:hover {
     gap: 20px;
 }
 
-/* Hero Section */
 .movie-details-hero {
     display: flex;
     align-items: center;
@@ -397,14 +397,12 @@ button.outline:hover {
     color: var(--primary-text-color);
 }
 
-/* Main Section */
 .movie-details-main {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Synopsis Section */
 .movie-synopsis {
     background-color: #FFFFFF;
     padding: 20px;
@@ -423,7 +421,7 @@ button.outline:hover {
     color: var(--secondary-text-color);
 }
 
-/* Actions Section */
+/*-------------- Actions Section --------------*/
 .movie-actions {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -512,12 +510,12 @@ button.outline:hover {
     text-decoration: underline;
 }
 
-/* Toast container */
+/*-------------- Toast container --------------*/
 .toast {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #333;
+    background-color: var(--primary-text-color);
     color: #fff;
     padding: 15px 20px;
     border-radius: 8px;
@@ -527,7 +525,7 @@ button.outline:hover {
     opacity: 0;
 }
 
-/* Fade-in and fade-out animation */
+/*-------------- Fade-in and fade-out animation --------------*/
 @keyframes fadeInOut {
     0% {
         opacity: 0;
@@ -551,10 +549,9 @@ button.outline:hover {
 }
 
 
-/* Responsive Styles (Mobile) */
+/*-------------- Responsive Styles (Mobile) --------------*/
 @media (max-width: 768px) {
 
-    /* Header adjustments */
     header {
         flex-wrap: wrap;
         flex-direction: column;
@@ -572,10 +569,14 @@ button.outline:hover {
     }
 
     header .search-bar input {
-        width: 60%;
+        width: 50%;
         max-width: 300px;
         padding: 10px 2px;
         font-size: 15px;
+    }
+
+    header .search-bar input:focus {
+        width: 60%;
     }
 
     header .search-bar button {
@@ -595,13 +596,11 @@ button.outline:hover {
         padding: 0;
     }
 
-    /* Center hero section */
     .hero {
         height: 250px;
         text-align: center;
     }
 
-    /* Best Movies & Series Section */
     .best-movies,
     .best-series {
         display: flex;
@@ -622,12 +621,10 @@ button.outline:hover {
     .best-movies p,
     .best-series p {
         order: -1;
-        /* Ensure p comes after h2 */
         font-size: 16px;
         margin-bottom: 20px
     }
 
-    /* Adjust movie cards for better appearance */
     .movie-card {
         width: 90%;
         max-width: 350px;
@@ -649,13 +646,11 @@ button.outline:hover {
         font-size: 15px;
     }
 
-    /* Adjust buttons */
     button {
         font-size: 14px;
         padding: 8px 16px;
     }
 
-    /* Page Title Adjustments */
     .page-title h1 {
         font-size: 24px;
     }
@@ -664,7 +659,6 @@ button.outline:hover {
         font-size: 14px;
     }
 
-    /* Footer */
     #footer a {
         font-size: 16px;
     }

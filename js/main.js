@@ -25,5 +25,3 @@ seriesData = seriesData.results.slice(0, 5);
 
 let seriesList = new MoviesList(seriesElement, seriesData, "tv");
 seriesList.init();
-
-console.log(document.querySelectorAll(".outline"));

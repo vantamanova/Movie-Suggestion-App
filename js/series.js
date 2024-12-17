@@ -13,7 +13,6 @@ let selectedGenre;
 document.getElementById("apply-filters").addEventListener("click", async () => {
     const genreSelect = document.getElementById("genre");
     selectedGenre = genreSelect.value;
-    console.log("You selected: ", selectedGenre);
 
     try {
         // Get the genre ID
