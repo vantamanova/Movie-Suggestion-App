@@ -64,14 +64,32 @@ export default class ExternalServices {
   }
 }
 
-// Loads Header and Footer
-export async function loadHeaderFooter() {
+// Loads Header and Footer with a callback
+export async function loadHeaderFooter(callback) {
   const headerTemplate = await loadTemplate("partials/header.html");
   const footerTemplate = await loadTemplate("partials/footer.html");
 
   renderWithTemplate(headerTemplate, document.getElementById("header"));
   renderWithTemplate(footerTemplate, document.getElementById("footer"));
+
+  // Call the callback function
+  if (callback && typeof callback === "function") {
+    callback();
+  }
 }
+
+export function attachSearchHandler(buttonId, inputId, targetPage) {
+  document.getElementById(buttonId).addEventListener("click", () => {
+      const searchInput = document.getElementById(inputId).value.trim();
+
+      if (searchInput) {
+          window.location.href = `${targetPage}?query=${encodeURIComponent(searchInput)}`;
+      } else {
+          showToast("Please enter a search term.");
+      }
+  });
+}
+
 
 // Renders one element Using Template
 export function renderWithTemplate(template, parentElement) {

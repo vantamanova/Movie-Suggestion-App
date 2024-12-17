@@ -1,9 +1,12 @@
 import MoviesList from "./MoviesModule.mjs";
 import ExternalServices from "./utils.mjs";
 import { getGenreId } from "./MoviesModule.mjs";
-import { loadHeaderFooter } from "./utils.mjs";
+import { loadHeaderFooter, attachSearchHandler} from "./utils.mjs";
 
-loadHeaderFooter();
+loadHeaderFooter(() => {
+    attachSearchHandler("search-button", "search-input", "search.html");
+});
+
 let selectedGenre;
 
 // Get genre from the user

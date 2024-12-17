@@ -1,6 +1,9 @@
-import { loadHeaderFooter, renderListWithTemplate, showToast } from "./utils.mjs";
+import { loadHeaderFooter, renderListWithTemplate, showToast, attachSearchHandler } from "./utils.mjs";
 
-loadHeaderFooter();
+loadHeaderFooter(() => {
+    attachSearchHandler("search-button", "search-input", "search.html");
+});
+
 
 function favoriteMovieTemplate(movie) {
     return `

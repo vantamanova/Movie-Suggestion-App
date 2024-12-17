@@ -1,7 +1,9 @@
-import { loadHeaderFooter } from "./utils.mjs";
+import { loadHeaderFooter, attachSearchHandler } from "./utils.mjs";
 import MovieDetails from "./MovieDetails.mjs";
 
-loadHeaderFooter();
+loadHeaderFooter(() => {
+    attachSearchHandler("search-button", "search-input", "search.html");
+});
 
 // get movie ID from somewhere
 const params = new URLSearchParams(window.location.search);

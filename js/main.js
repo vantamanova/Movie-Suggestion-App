@@ -1,7 +1,9 @@
 import MoviesList from "./MoviesModule.mjs";
-import ExternalServices, { loadHeaderFooter } from "./utils.mjs";
+import ExternalServices, { loadHeaderFooter, attachSearchHandler} from "./utils.mjs";
 
-loadHeaderFooter();
+loadHeaderFooter(() => {
+    attachSearchHandler("search-button", "search-input", "search.html");
+});
 
 // Creates List of top rated movies
 const moviesElement = ".best-movies";
