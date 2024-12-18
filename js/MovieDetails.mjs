@@ -10,7 +10,7 @@ export function moviePageTemplate(movie) {
             <div class="movie-details-info">
                 <h1 id="movie-title">${movie.title}</h1>
                 <p id="movie-release-date">Release Date: <span>${movie.release_date}</span></p>
-                <p id="movie-rating">Rating: <span>${movie.vote_average}/10</span></p>
+                <p id="movie-rating">Rating: <span>${movie.vote_average.toFixed(1)}/10</span></p>
                 <p id="movie-genre">Genre: <span>${movie.genres.map(genre => genre.name).join(', ')}</span></p>
             </div>
         </div>
@@ -40,7 +40,7 @@ export function seriesPageTemplate(tvShow) {
             <div class="movie-details-info">
                 <h1 id="movie-title">${tvShow.name}</h1>
                 <p id="movie-release-date">Release Date: <span>${tvShow.first_air_date}</span></p>
-                <p id="movie-rating">Rating: <span>${tvShow.vote_average}/10</span></p>
+                <p id="movie-rating">Rating: <span>${tvShow.vote_average.toFixed(1)}/10</span></p>
                 <p id="movie-genre">Genre: <span>${tvShow.genres.map(genre => genre.name).join(', ')}</span></p>
             </div>
         </div>
@@ -80,6 +80,7 @@ export default class MovieDetails{
 
             // Fetch movie or series data
             const data = await moviesDataSource.getData(params);
+            console.log(data);
 
             // Render the page content using appropriate template
             const templateHtml = this.type === "movie" ? moviePageTemplate(data) : seriesPageTemplate(data);
