@@ -1,5 +1,5 @@
 Movie Suggestion App
-The Movie Suggestion App is a dynamic web application that helps users discover movies and TV series, search for specific titles, view detailed information, check streaming availability and save their favorites for later.
+A dynamic web application that helps users discover movies and TV series, search for specific titles, view detailed information, check streaming availability and save their favorites for later.
 
 Features
 Home Page: Displays top-rated movies and TV series.
